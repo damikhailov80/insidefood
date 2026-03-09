@@ -11,6 +11,23 @@ alwaysApply: true
 - Don't create extra markdown files unless explicitly requested
 - Don't add anything the user didn't explicitly ask for
 
+## English Only in Code and Data
+
+All content inside source files must be written in English:
+- variable names, string values, comments, log messages
+- seed/fixture data (names, labels, descriptions)
+- test data
+
+```js
+// ❌ BAD
+{ name: 'Молоко 2.5%', brand: 'Простоквашино' }
+
+// ✅ GOOD
+{ name: 'Milk 2.5%', brand: 'Prostokvashino' }
+```
+
+User-facing UI copy is exempt if the product targets a non-English locale.
+
 ## Code Standards
 - Keep implementations minimal and focused
 - Only add what's specifically requested
