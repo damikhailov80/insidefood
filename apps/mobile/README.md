@@ -2,6 +2,10 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## UI Components
+
+This project uses [React Native Paper](https://reactnativepaper.com/) for Material Design components. React Native Paper provides a comprehensive set of UI components that follow Material Design guidelines, ensuring a consistent and polished user experience across platforms.
+
 ## Get started
 
 1. Install dependencies
