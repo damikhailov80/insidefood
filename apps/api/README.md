@@ -14,7 +14,7 @@
 2. In `.env` inside `apps/api` check the connection string:
 
 ```env
-DATABASE_URL="postgresql://dmikhailov@localhost:5432/insidefood"
+DATABASE_URL="postgresql://username@localhost:5432/insidefood"
 ```
 
 Update user / database / port as needed for your local setup.
