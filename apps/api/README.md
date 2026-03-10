@@ -38,8 +38,17 @@ model Product {
 
 ```bash
 cd apps/api
-npx prisma migrate dev --name <migration_name>
+npx prisma db push
 ```
+
+- **Reset database and recreate all tables** (removes all data):
+
+```bash
+cd apps/api
+npx prisma db push --force-reset
+```
+
+> **Note**: We use `db push` instead of migrations during development for simplicity. This directly applies schema changes to the database without creating migration files.
 
 ### Prisma Client generation
 
@@ -60,7 +69,7 @@ Run the seed:
 
 ```bash
 cd apps/api
-node prisma/seed.js
+npx prisma db seed
 ```
 
 The seed script inserts several products (Coca-Cola, Sprite, Lay’s, etc.) into the `products` table. If records with the same unique `barcode` already exist, they are skipped.
@@ -75,4 +84,3 @@ npx prisma studio
 ```
 
 This will open Prisma Studio in your browser, where you can inspect and modify records in tables such as `products`.
-

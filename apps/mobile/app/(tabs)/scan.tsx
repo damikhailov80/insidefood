@@ -1,12 +1,11 @@
-import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, View, Dimensions } from 'react-native';
-import { useRouter, useFocusEffect } from 'expo-router';
-import { useCallback } from 'react';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { CameraView, useCameraPermissions } from "expo-camera";
+import { useState, useCallback } from "react";
+import { Button, StyleSheet, Text, View, Dimensions } from "react-native";
+import { useRouter, useFocusEffect } from "expo-router";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 const FRAME_SIZE = Math.min(width, height) * 0.85;
 
 export default function ScanScreen() {
@@ -21,7 +20,7 @@ export default function ScanScreen() {
       return () => {
         setIsScanning(false);
       };
-    }, [])
+    }, []),
   );
 
   if (!permission) {
@@ -31,7 +30,9 @@ export default function ScanScreen() {
   if (!permission.granted) {
     return (
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.message}>We need your permission to show the camera</ThemedText>
+        <ThemedText style={styles.message}>
+          We need your permission to show the camera
+        </ThemedText>
         <Button onPress={requestPermission} title="Grant permission" />
       </ThemedView>
     );
@@ -51,7 +52,7 @@ export default function ScanScreen() {
         facing="back"
         onBarcodeScanned={isScanning ? handleBarcodeScanned : undefined}
         barcodeScannerSettings={{
-          barcodeTypes: ['qr', 'ean13', 'ean8', 'code128', 'code39'],
+          barcodeTypes: ["qr", "ean13", "ean8", "code128", "code39"],
         }}
       />
 
@@ -60,7 +61,9 @@ export default function ScanScreen() {
 
         <View style={styles.middleRow}>
           <View style={styles.sideOverlay} />
-          <View style={[styles.scanArea, { width: FRAME_SIZE, height: FRAME_SIZE }]}>
+          <View
+            style={[styles.scanArea, { width: FRAME_SIZE, height: FRAME_SIZE }]}
+          >
             <View style={[styles.corner, styles.topLeft]} />
             <View style={[styles.corner, styles.topRight]} />
             <View style={[styles.corner, styles.bottomLeft]} />
@@ -82,17 +85,17 @@ export default function ScanScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   message: {
-    textAlign: 'center',
+    textAlign: "center",
     paddingBottom: 10,
   },
   camera: {
     flex: 1,
   },
   overlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
@@ -100,23 +103,23 @@ const styles = StyleSheet.create({
   },
   topOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
   },
   middleRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   sideOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
   },
   scanArea: {
-    position: 'relative',
+    position: "relative",
   },
   corner: {
-    position: 'absolute',
+    position: "absolute",
     width: 50,
     height: 50,
-    borderColor: '#fff',
+    borderColor: "#fff",
     borderWidth: 5,
   },
   topLeft: {
@@ -145,14 +148,14 @@ const styles = StyleSheet.create({
   },
   bottomOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    justifyContent: "center",
+    alignItems: "center",
     paddingBottom: 40,
   },
   instructionText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });

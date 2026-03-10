@@ -13,10 +13,18 @@ datasource db {
 }
 
 model Product {
-  id      Int    @id @default(autoincrement())
-  name    String
-  brand   String
-  barcode String @unique
+  id            Int     @id @default(autoincrement())
+  name          String
+  brand         String
+  barcode       String  @unique
+  energy        Float
+  fat           Float
+  fat_saturated Float
+  carbs         Float
+  sugars        Float
+  protein       Float
+  salt          Float
+  fiber         Float?
 
   @@map("products")
 }
