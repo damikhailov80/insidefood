@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, ScrollView, Button, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { API_URL } from '@/config/api';
@@ -9,6 +10,7 @@ interface Product {
     id: number;
     barcode: string;
     name: string;
+    brand: string;
     description?: string;
     price?: number;
     createdAt: string;
@@ -18,13 +20,27 @@ interface Product {
 export default function ProductScreen() {
     const { barcode } = useLocalSearchParams<{ barcode: string }>();
     const router = useRouter();
+    const navigation = useNavigation();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
+        // Устанавливаем начальный заголовок
+        navigation.setOptions({ title: 'Product details' });
         fetchProduct();
     }, [barcode]);
+
+    useEffect(() => {
+        // Обновляем заголовок в зависимости от состояния
+        if (loading) {
+            navigation.setOptions({ title: 'Product details' });
+        } else if (notFound) {
+            navigation.setOptions({ title: 'Product not found' });
+        } else if (product) {
+            navigation.setOptions({ title: product.name });
+        }
+    }, [loading, notFound, product]);
 
     const fetchProduct = async () => {
         try {
@@ -59,21 +75,25 @@ export default function ProductScreen() {
 
     if (loading) {
         return (
-            <ThemedView style={styles.container}>
-                <ActivityIndicator size="large" />
-                <ThemedText style={styles.loadingText}>Loading product...</ThemedText>
+            <ThemedView style={styles.content}>
+                <ThemedView style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" />
+                    <ThemedText style={styles.loadingText}>Loading product...</ThemedText>
+                </ThemedView>
             </ThemedView>
         );
     }
 
     if (notFound) {
         return (
-            <ThemedView style={styles.container}>
-                <ThemedText type="title" style={styles.notFoundTitle}>Oops</ThemedText>
-                <ThemedText style={styles.notFoundText}>
-                    Looks like this product is not in the database yet
-                </ThemedText>
-                <Button title="Back to Scanner" onPress={() => router.back()} />
+            <ThemedView style={styles.content}>
+                <ThemedView style={styles.container}>
+                    <ThemedText type="title" style={styles.notFoundTitle}>Oops</ThemedText>
+                    <ThemedText style={styles.notFoundText}>
+                        Looks like this product is not in the database yet
+                    </ThemedText>
+                    <Button title="Back to Scanner" onPress={() => router.back()} />
+                </ThemedView>
             </ThemedView>
         );
     }
@@ -85,11 +105,14 @@ export default function ProductScreen() {
     return (
         <ScrollView style={styles.scrollView}>
             <ThemedView style={styles.content}>
-                <ThemedText type="title" style={styles.title}>{product.name}</ThemedText>
-
                 <ThemedView style={styles.section}>
                     <ThemedText type="subtitle">Barcode</ThemedText>
                     <ThemedText style={styles.value}>{product.barcode}</ThemedText>
+                </ThemedView>
+
+                <ThemedView style={styles.section}>
+                    <ThemedText type="subtitle">Brand</ThemedText>
+                    <ThemedText style={styles.value}>{product.brand}</ThemedText>
                 </ThemedView>
 
                 {product.description && (
@@ -127,6 +150,11 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         padding: 20,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     title: {
         marginBottom: 24,

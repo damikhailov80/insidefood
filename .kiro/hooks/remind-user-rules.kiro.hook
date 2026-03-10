@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Remind User Rules",
+  "description": "Reminds agent about user preferences before every response",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "CRITICAL REMINDER: Follow user-preferences.md rules."
+  },
+  "workspaceFolderName": "insidefood",
+  "shortName": "remind-user-rules"
+}
