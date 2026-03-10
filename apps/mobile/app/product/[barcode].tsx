@@ -5,6 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { API_URL } from '@/config/api';
+import { useAppDispatch } from '@/hooks/redux';
+import { addScannedProduct } from '@/store/scannedProductsSlice';
 
 interface Product {
     id: number;
@@ -18,21 +20,24 @@ interface Product {
 }
 
 export default function ProductScreen() {
-    const { barcode } = useLocalSearchParams<{ barcode: string }>();
+    const { barcode, fromHistory } = useLocalSearchParams<{ barcode: string; fromHistory?: string }>();
     const router = useRouter();
     const navigation = useNavigation();
+    const dispatch = useAppDispatch();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
 
-    useEffect(() => {
-        // Устанавливаем начальный заголовок
-        navigation.setOptions({ title: 'Product details' });
-        fetchProduct();
-    }, [barcode]);
+    const isFromHistory = fromHistory === 'true';
 
     useEffect(() => {
-        // Обновляем заголовок в зависимости от состояния
+        // Set initial title
+        navigation.setOptions({ title: 'Product details' });
+        fetchProduct();
+    }, [barcode, navigation]);
+
+    useEffect(() => {
+        // Update title based on state
         if (loading) {
             navigation.setOptions({ title: 'Product details' });
         } else if (notFound) {
@@ -40,7 +45,17 @@ export default function ProductScreen() {
         } else if (product) {
             navigation.setOptions({ title: product.name });
         }
-    }, [loading, notFound, product]);
+    }, [loading, notFound, product, navigation]);
+
+    const saveToHistory = (productData: Product | null) => {
+        // Don't save to history if coming from history
+        if (!isFromHistory) {
+            dispatch(addScannedProduct({
+                barcode: barcode!,
+                name: productData?.name,
+            }));
+        }
+    };
 
     const fetchProduct = async () => {
         try {
@@ -51,6 +66,7 @@ export default function ProductScreen() {
 
             if (response.status === 404) {
                 setNotFound(true);
+                saveToHistory(null);
                 return;
             }
 
@@ -60,6 +76,7 @@ export default function ProductScreen() {
 
             const data = await response.json();
             setProduct(data);
+            saveToHistory(data);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Failed to load product';
             Alert.alert('Error', errorMessage, [
@@ -92,7 +109,10 @@ export default function ProductScreen() {
                     <ThemedText style={styles.notFoundText}>
                         Looks like this product is not in the database yet
                     </ThemedText>
-                    <Button title="Back to Scanner" onPress={() => router.back()} />
+                    <Button
+                        title={isFromHistory ? "Back" : "Back to Scanner"}
+                        onPress={() => router.back()}
+                    />
                 </ThemedView>
             </ThemedView>
         );
@@ -130,7 +150,10 @@ export default function ProductScreen() {
                 )}
 
                 <ThemedView style={styles.buttonContainer}>
-                    <Button title="Scan Another" onPress={() => router.back()} />
+                    <Button
+                        title={isFromHistory ? "Back" : "Scan Another"}
+                        onPress={() => router.back()}
+                    />
                 </ThemedView>
             </ThemedView>
         </ScrollView>

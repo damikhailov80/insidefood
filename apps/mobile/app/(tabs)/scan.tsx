@@ -1,5 +1,5 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, StyleSheet, Text, View, Dimensions } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { useCallback } from 'react';
