@@ -6,11 +6,12 @@ import {
   ScrollView,
   Button,
   Alert,
+  Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { API_URL } from "@/config/api";
+import { API_URL, MINIO_URL } from "@/config/api";
 import { useAppDispatch } from "@/hooks/redux";
 import { addScannedProduct } from "@/store/scannedProductsSlice";
 
@@ -25,6 +26,7 @@ interface Product {
   fat: number;
   carbs: number;
   protein: number;
+  photoMain: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -146,6 +148,21 @@ export default function ProductScreen() {
   return (
     <ScrollView style={styles.scrollView}>
       <ThemedView style={styles.content}>
+        {product.photoMain && (
+          <ThemedView style={styles.photoSection}>
+            <Image
+              source={{
+                uri: product.photoMain.replace(
+                  "http://localhost:9000",
+                  MINIO_URL,
+                ),
+              }}
+              style={styles.productImage}
+              resizeMode="contain"
+            />
+          </ThemedView>
+        )}
+
         <ThemedView style={styles.section}>
           <ThemedText type="subtitle">Barcode</ThemedText>
           <ThemedText style={styles.value}>{product.barcode}</ThemedText>
@@ -289,5 +306,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 32,
+  },
+  photoSection: {
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  productImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
   },
 });

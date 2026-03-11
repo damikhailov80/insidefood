@@ -23,20 +23,16 @@ export class ProductService {
   }
 
   async create(data: CreateProductDto) {
-    const product = await this.prisma.product.create({
+    return await this.prisma.product.create({
       data: data,
     });
-
-    return this.transformProductWithUrls(product);
   }
 
   async update(barcode: string, data: UpdateProductDto) {
-    const product = await this.prisma.product.update({
+    return await this.prisma.product.update({
       where: { barcode },
       data: data,
     });
-
-    return this.transformProductWithUrls(product);
   }
 
   private transformProductWithUrls(product: any) {
