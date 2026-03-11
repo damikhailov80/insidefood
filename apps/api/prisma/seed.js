@@ -22,6 +22,7 @@ const products = [
     protein: 0,
     salt: 0.01,
     fiber: null,
+    photoMain: "placeholder-coca-cola.jpg",
   },
   {
     name: "Sprite 0.5L",
@@ -35,6 +36,7 @@ const products = [
     protein: 0,
     salt: 0.01,
     fiber: null,
+    photoMain: "placeholder-sprite.jpg",
   },
   {
     name: "Lay's Classic 150g",
@@ -48,6 +50,7 @@ const products = [
     protein: 6,
     salt: 1.5,
     fiber: 4.5,
+    photoMain: "placeholder-lays.jpg",
   },
   {
     name: "Nutella 350g",
@@ -61,6 +64,7 @@ const products = [
     protein: 6.3,
     salt: 0.107,
     fiber: null,
+    photoMain: "placeholder-nutella.jpg",
   },
   {
     name: "Milk 2.5% 1L",
@@ -74,6 +78,7 @@ const products = [
     protein: 2.8,
     salt: 0.1,
     fiber: null,
+    photoMain: "placeholder-milk.jpg",
   },
   {
     name: "Mellenu zefirs",
@@ -87,6 +92,7 @@ const products = [
     protein: 4.5,
     salt: 0.02,
     fiber: null,
+    photoMain: "placeholder-zefirs.jpg",
   },
 ];
 async function main() {

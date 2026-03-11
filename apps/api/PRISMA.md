@@ -85,6 +85,36 @@ During development, we use a simplified approach without migrations:
 3. **Reset if needed**: `npx prisma db push --force-reset`
 4. **Seed with test data**: `npx prisma db seed`
 
+### Complete Database Recreation
+
+To completely recreate all tables from scratch:
+
+```bash
+cd apps/api
+npx prisma migrate reset
+```
+
+This command will:
+
+- Drop the database
+- Create a new database
+- Apply all migrations from scratch
+- Run the seed script automatically
+
+**Alternative approach for development (without migrations):**
+
+```bash
+cd apps/api
+npx prisma db push --force-reset
+npx prisma db seed
+```
+
+This will:
+
+- Drop all tables and data
+- Recreate tables based on current schema
+- Run the seed script to populate with test data
+
 The Product model includes nutritional fields:
 
 - `energy` (kcal per 100g)

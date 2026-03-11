@@ -25,6 +25,14 @@ model Product {
   protein       Float
   salt          Float
   fiber         Float?
+  
+  // Photo fields
+  photoMain        String   // Required - main product photo
+  photoNutrition   String?  // Optional - nutrition facts photo
+  photoIngredients String?  // Optional - ingredients photo
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("products")
 }
