@@ -21,8 +21,12 @@ interface Product {
   brand: string;
   description?: string;
   price?: number;
-  createdAt: string;
-  updatedAt: string;
+  energy: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export default function ProductScreen() {
@@ -38,23 +42,6 @@ export default function ProductScreen() {
   const [notFound, setNotFound] = useState(false);
 
   const isFromHistory = fromHistory === "true";
-
-  useEffect(() => {
-    // Set initial title
-    navigation.setOptions({ title: "Product details" });
-    fetchProduct();
-  }, [barcode, navigation, fetchProduct]);
-
-  useEffect(() => {
-    // Update title based on state
-    if (loading) {
-      navigation.setOptions({ title: "Product details" });
-    } else if (notFound) {
-      navigation.setOptions({ title: "Product not found" });
-    } else if (product) {
-      navigation.setOptions({ title: product.name });
-    }
-  }, [loading, notFound, product, navigation]);
 
   const saveToHistory = useCallback(
     (productData: Product | null) => {
@@ -104,6 +91,23 @@ export default function ProductScreen() {
       setLoading(false);
     }
   }, [barcode, router, saveToHistory]);
+
+  useEffect(() => {
+    // Set initial title
+    navigation.setOptions({ title: "Product details" });
+    fetchProduct();
+  }, [barcode, navigation, fetchProduct]);
+
+  useEffect(() => {
+    // Update title based on state
+    if (loading) {
+      navigation.setOptions({ title: "Product details" });
+    } else if (notFound) {
+      navigation.setOptions({ title: "Product not found" });
+    } else if (product) {
+      navigation.setOptions({ title: product.name });
+    }
+  }, [loading, notFound, product, navigation]);
 
   if (loading) {
     return (
@@ -168,6 +172,42 @@ export default function ProductScreen() {
           </ThemedView>
         )}
 
+        <ThemedView style={styles.nutritionSection}>
+          <ThemedText type="title" style={styles.nutritionTitle}>
+            Nutrition Facts (per 100g)
+          </ThemedText>
+
+          <ThemedView style={styles.nutritionGrid}>
+            <ThemedView style={styles.nutritionItem}>
+              <ThemedText type="subtitle">Energy</ThemedText>
+              <ThemedText style={styles.nutritionValue}>
+                {product.energy} kcal
+              </ThemedText>
+            </ThemedView>
+
+            <ThemedView style={styles.nutritionItem}>
+              <ThemedText type="subtitle">Fat</ThemedText>
+              <ThemedText style={styles.nutritionValue}>
+                {product.fat}g
+              </ThemedText>
+            </ThemedView>
+
+            <ThemedView style={styles.nutritionItem}>
+              <ThemedText type="subtitle">Carbs</ThemedText>
+              <ThemedText style={styles.nutritionValue}>
+                {product.carbs}g
+              </ThemedText>
+            </ThemedView>
+
+            <ThemedView style={styles.nutritionItem}>
+              <ThemedText type="subtitle">Protein</ThemedText>
+              <ThemedText style={styles.nutritionValue}>
+                {product.protein}g
+              </ThemedText>
+            </ThemedView>
+          </ThemedView>
+        </ThemedView>
+
         <ThemedView style={styles.buttonContainer}>
           <Button
             title={isFromHistory ? "Back" : "Scan Another"}
@@ -207,6 +247,34 @@ const styles = StyleSheet.create({
   value: {
     marginTop: 8,
     fontSize: 16,
+  },
+  nutritionSection: {
+    marginTop: 24,
+    marginBottom: 20,
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+  },
+  nutritionTitle: {
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  nutritionGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  nutritionItem: {
+    width: "48%",
+    marginBottom: 12,
+    padding: 8,
+    borderRadius: 6,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+  },
+  nutritionValue: {
+    marginTop: 4,
+    fontSize: 16,
+    fontWeight: "600",
   },
   loadingText: {
     marginTop: 16,

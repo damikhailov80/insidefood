@@ -38,17 +38,8 @@ model Product {
 
 ```bash
 cd apps/api
-npx prisma db push
+npx prisma migrate dev --name <migration_name>
 ```
-
-- **Reset database and recreate all tables** (removes all data):
-
-```bash
-cd apps/api
-npx prisma db push --force-reset
-```
-
-> **Note**: We use `db push` instead of migrations during development for simplicity. This directly applies schema changes to the database without creating migration files.
 
 ### Prisma Client generation
 
@@ -69,7 +60,7 @@ Run the seed:
 
 ```bash
 cd apps/api
-npx prisma db seed
+node prisma/seed.js
 ```
 
 The seed script inserts several products (Coca-Cola, Sprite, Lay’s, etc.) into the `products` table. If records with the same unique `barcode` already exist, they are skipped.
@@ -84,3 +75,21 @@ npx prisma studio
 ```
 
 This will open Prisma Studio in your browser, where you can inspect and modify records in tables such as `products`.
+
+### Database Development Workflow
+
+During development, we use a simplified approach without migrations:
+
+1. **Make schema changes** in `prisma/schema.prisma`
+2. **Apply to database**: `npx prisma db push`
+3. **Reset if needed**: `npx prisma db push --force-reset`
+4. **Seed with test data**: `npx prisma db seed`
+
+The Product model includes nutritional fields:
+
+- `energy` (kcal per 100g)
+- `fat`, `fat_saturated` (grams per 100g)
+- `carbs`, `sugars` (grams per 100g)
+- `protein` (grams per 100g)
+- `salt` (grams per 100g)
+- `fiber` (optional, grams per 100g)
