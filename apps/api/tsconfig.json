@@ -9,6 +9,7 @@
     "target": "ES2022",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
     "tsBuildInfoFile": "dist/.tsbuildinfo"
   },
   "include": ["src"],

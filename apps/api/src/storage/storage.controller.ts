@@ -56,7 +56,9 @@ export class StorageController {
       this.storageService.validateFile(file);
       return await this.storageService.uploadFile(file);
     } catch (error) {
-      throw new BadRequestException(error.message);
+      throw new BadRequestException(
+        error instanceof Error ? error.message : "Upload failed",
+      );
     }
   }
 

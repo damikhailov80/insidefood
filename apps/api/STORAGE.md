@@ -12,6 +12,17 @@ Service for storing product photos with MinIO support (local development) and Cl
 
 ## Quick Setup
 
+### 0. Install MinIO Client (one-time setup)
+
+```bash
+# Option 1: Using Homebrew (recommended)
+brew install minio/stable/mc
+
+# Option 2: Direct download
+curl https://dl.min.io/client/mc/release/darwin-amd64/mc -o /usr/local/bin/mc
+chmod +x /usr/local/bin/mc
+```
+
 ### 1. Start MinIO
 
 ```bash
@@ -19,21 +30,26 @@ Service for storing product photos with MinIO support (local development) and Cl
 docker-compose up -d minio
 
 # Setup bucket (run once)
-./scripts/setup-minio.sh
+./scripts/minio/setup.sh
 ```
 
-### 2. Install Dependencies
+### 2. Upload Sample Images to MinIO
+
+```bash
+# Upload sample product images to MinIO
+./scripts/minio/seed.sh
+```
+
+This will:
+
+- Setup MinIO bucket and configure access
+- Upload sample product images directly to MinIO
+
+### 3. Install Dependencies
 
 ```bash
 cd apps/api
 npm install
-```
-
-### 3. Run Database Migration
-
-```bash
-cd apps/api
-npx prisma migrate dev --name add-photo-fields
 ```
 
 ### 4. Start API
@@ -42,6 +58,12 @@ npx prisma migrate dev --name add-photo-fields
 cd apps/api
 npm run dev
 ```
+
+### MinIO Console Access
+
+- **URL**: http://localhost:9001
+- **Username**: minioadmin
+- **Password**: minioadmin
 
 ### Local Development (MinIO)
 
@@ -166,3 +188,40 @@ CDN_BASE_URL=https://cdn.yourdomain.com
 - File extension verification
 - Upload size limits
 - Unique filename generation
+
+## Development Scripts
+
+### Setup with Sample Images
+
+```bash
+# Upload sample product images to MinIO
+./scripts/minio/seed.sh
+```
+
+This script will:
+
+1. Setup MinIO bucket and configure access
+2. Upload sample product images directly to MinIO
+
+### Individual Scripts
+
+```bash
+# Setup MinIO bucket only
+./scripts/minio/setup.sh
+
+# Upload sample images to MinIO
+./scripts/minio/seed.sh
+```
+
+### Sample Products
+
+| Product            | Image File                 | Source   |
+| ------------------ | -------------------------- | -------- |
+| Coca-Cola 0.5L     | placeholder-coca-cola.webp | Unsplash |
+| Sprite 0.5L        | placeholder-sprite.png     | Unsplash |
+| Lay's Classic 150g | placeholder-lays.webp      | Unsplash |
+| Nutella 350g       | placeholder-nutella.webp   | Unsplash |
+| Milk 2.5% 1L       | placeholder-milk.webp      | Unsplash |
+| Mellenu zefirs     | placeholder-zefirs.png     | Unsplash |
+
+Images are stored in `scripts/minio/images/` and uploaded directly to MinIO via the seed script.

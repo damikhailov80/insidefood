@@ -7,14 +7,14 @@ echo "Setting up MinIO bucket..."
 echo "Waiting for MinIO to start..."
 sleep 5
 
-# Install MinIO client if not present
+# Check if MinIO client is installed
 if ! command -v mc &> /dev/null; then
-    echo "Installing MinIO client..."
-    curl https://dl.min.io/client/mc/release/darwin-amd64/mc \
-      --create-dirs \
-      -o $HOME/minio-binaries/mc
-    chmod +x $HOME/minio-binaries/mc
-    export PATH=$PATH:$HOME/minio-binaries/
+    echo "MinIO client (mc) not found!"
+    echo "Please install it first:"
+    echo "  brew install minio/stable/mc"
+    echo "  or"
+    echo "  curl https://dl.min.io/client/mc/release/darwin-amd64/mc -o /usr/local/bin/mc && chmod +x /usr/local/bin/mc"
+    exit 1
 fi
 
 # Configure MinIO client
