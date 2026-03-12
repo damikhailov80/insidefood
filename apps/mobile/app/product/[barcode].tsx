@@ -122,6 +122,10 @@ export default function ProductScreen() {
     );
   }
 
+  const handleAddProduct = () => {
+    router.push(`/add-product/${barcode}`);
+  };
+
   if (notFound) {
     return (
       <ThemedView style={styles.content}>
@@ -132,10 +136,14 @@ export default function ProductScreen() {
           <ThemedText style={styles.notFoundText}>
             Looks like this product is not in the database yet
           </ThemedText>
-          <Button
-            title={isFromHistory ? "Back" : "Back to Scanner"}
-            onPress={() => router.back()}
-          />
+          <ThemedView style={styles.buttonGroup}>
+            <Button title="Add Product" onPress={handleAddProduct} />
+            <ThemedView style={styles.buttonSpacer} />
+            <Button
+              title={isFromHistory ? "Back" : "Back to Scanner"}
+              onPress={() => router.back()}
+            />
+          </ThemedView>
         </ThemedView>
       </ThemedView>
     );
@@ -315,5 +323,12 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     borderRadius: 8,
+  },
+  buttonGroup: {
+    width: "100%",
+    alignItems: "center",
+  },
+  buttonSpacer: {
+    height: 12,
   },
 });

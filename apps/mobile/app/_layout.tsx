@@ -29,6 +29,10 @@ export default function RootLayout() {
               name="product/[barcode]"
               options={{ title: "Product details" }}
             />
+            <Stack.Screen
+              name="add-product/[barcode]"
+              options={{ title: "Add Product" }}
+            />
           </Stack>
           <StatusBar style="dark" />
         </ThemeProvider>

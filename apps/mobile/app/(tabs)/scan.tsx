@@ -1,7 +1,7 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState, useCallback } from "react";
 import { Button, StyleSheet, Text, View, Dimensions } from "react-native";
-import { useRouter, useFocusEffect } from "expo-router";
+import { useRouter, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 
@@ -12,6 +12,7 @@ export default function ScanScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [isScanning, setIsScanning] = useState(true);
   const router = useRouter();
+  const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
 
   // Re-enable scanning when screen comes back into focus
   useFocusEffect(
@@ -42,7 +43,14 @@ export default function ScanScreen() {
     if (!isScanning) return;
 
     setIsScanning(false);
-    router.push(`/product/${data}`);
+
+    if (returnTo === "add-product") {
+      // Return to add-product flow with scanned barcode
+      router.replace(`/add-product/${data}`);
+    } else {
+      // Default behavior - go to product page
+      router.push(`/product/${data}`);
+    }
   };
 
   return (
