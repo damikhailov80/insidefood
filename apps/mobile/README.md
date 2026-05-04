@@ -1,54 +1,106 @@
-# Welcome to your Expo app 👋
+# InsideFood Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile application for InsideFood built with React Native and Expo.
 
-## UI Components
+## Prerequisites
 
-This project uses [React Native Paper](https://reactnativepaper.com/) for Material Design components. React Native Paper provides a comprehensive set of UI components that follow Material Design guidelines, ensuring a consistent and polished user experience across platforms.
+- Node.js 18+ and npm
+- Expo CLI
+- For iOS: macOS with Xcode
+- For Android: Android Studio with emulator or physical device
 
-## Get started
+## Installation
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+From the project root:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Or from the mobile app directory:
 
-## Learn more
+```bash
+cd apps/mobile
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Running the App
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Start Development Server
 
-## Join the community
+```bash
+npm run dev
+```
 
-Join our community of developers creating universal apps.
+Or:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm start
+```
+
+### Run on Specific Platform
+
+```bash
+npm run ios       # iOS simulator
+npm run android   # Android emulator
+npm run web       # Web browser
+```
+
+### Using Expo Go
+
+1. Install Expo Go on your device ([iOS](https://apps.apple.com/app/expo-go/id982107779) / [Android](https://play.google.com/store/apps/details?id=host.exp.exponent))
+2. Run `npm start`
+3. Scan the QR code with your device
+
+## Project Structure
+
+```
+apps/mobile/
+├── app/                    # File-based routing
+│   ├── (tabs)/            # Tab navigation screens
+│   ├── add-product/       # Add product flow
+│   └── product/           # Product details
+├── components/            # Reusable components
+├── config/                # Configuration files
+├── constants/             # App constants
+└── assets/                # Images and static files
+```
+
+## Tech Stack
+
+- React Native 0.81.5
+- Expo ~54.0
+- Expo Router for navigation
+- React Native Paper for UI components
+- Redux Toolkit for state management
+- TypeScript
+
+## Available Scripts
+
+- `npm start` - Start Expo development server
+- `npm run dev` - Alias for start
+- `npm run ios` - Run on iOS simulator
+- `npm run android` - Run on Android emulator
+- `npm run web` - Run in web browser
+- `npm run lint` - Run ESLint
+
+## Features
+
+- Barcode scanning with camera
+- Product search and details
+- Add new products with photo recognition
+- Scan history
+- Material Design UI with React Native Paper
+
+## Configuration
+
+The app uses Expo Router for file-based routing and React Native Paper for UI components. Configuration can be found in:
+
+- `app.json` - Expo configuration
+- `package.json` - Dependencies and scripts
+
+## Learn More
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Paper](https://reactnativepaper.com/)
+- [Expo Router](https://docs.expo.dev/router/introduction/)

@@ -23,7 +23,7 @@ export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
   @Post("upload")
-  @ApiOperation({ summary: "Upload a photo file" })
+  @ApiOperation({ summary: "Upload a photo file permanently" })
   @ApiConsumes("multipart/form-data")
   @ApiBody({
     schema: {
@@ -55,6 +55,46 @@ export class StorageController {
     try {
       this.storageService.validateFile(file);
       return await this.storageService.uploadFile(file);
+    } catch (error) {
+      throw new BadRequestException(
+        error instanceof Error ? error.message : "Upload failed",
+      );
+    }
+  }
+
+  @Post("upload-temporary")
+  @ApiOperation({ summary: "Upload a photo file temporarily" })
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        file: {
+          type: "string",
+          format: "binary",
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: "File uploaded temporarily",
+    schema: {
+      type: "object",
+      properties: {
+        filename: { type: "string" },
+        url: { type: "string" },
+        uploadedAt: { type: "string", format: "date-time" },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor("file"))
+  async uploadTemporary(@UploadedFile() file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException("No file provided");
+    }
+
+    try {
+      return await this.storageService.uploadTemporary(file);
     } catch (error) {
       throw new BadRequestException(
         error instanceof Error ? error.message : "Upload failed",

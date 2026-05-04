@@ -68,4 +68,44 @@ export class StorageService {
       throw new Error("File too large. Maximum size is 10MB.");
     }
   }
+
+  private async uploadTemporaryFile(
+    file: Express.Multer.File,
+  ): Promise<{ filename: string; url: string; uploadedAt: Date }> {
+    const filename = this.generateTemporaryFilename(file.originalname);
+
+    const command = new PutObjectCommand({
+      Bucket: this.config.bucket,
+      Key: filename,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+      ACL: "public-read",
+      Metadata: {
+        temporary: "true",
+        "uploaded-at": new Date().toISOString(),
+      },
+    });
+
+    await this.s3Client.send(command);
+
+    return {
+      filename,
+      url: this.getFileUrl(filename),
+      uploadedAt: new Date(),
+    };
+  }
+
+  async uploadTemporary(
+    file: Express.Multer.File,
+  ): Promise<{ filename: string; url: string; uploadedAt: Date }> {
+    this.validateFile(file);
+    return this.uploadTemporaryFile(file);
+  }
+
+  private generateTemporaryFilename(originalName: string): string {
+    const extension = originalName.split(".").pop();
+    const timestamp = Date.now();
+    const uuid = uuidv4();
+    return `temp/${uuid}-${timestamp}.${extension}`;
+  }
 }
